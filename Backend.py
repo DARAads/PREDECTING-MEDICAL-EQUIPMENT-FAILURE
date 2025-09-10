@@ -37,10 +37,10 @@ os.environ['JAVA_HOME'] = "/usr/lib/jvm/java-11-openjdk-amd64"
 os.environ['SPARK_HOME'] = "/content/spark-3.5.1-bin-hadoop3"
 spark = SparkSession.builder.appName("HiveMQ_IoT_ML_Streaming").getOrCreate()
 
-BROKER = "01b5269178e3464583fc069b9682daf6.s1.eu.hivemq.cloud"
+BROKER = "35149582d984409eb3b725b957ef3776.s1.eu.hivemq.cloud"
 PORT = 8883
-USERNAME = "Bharathnath"
-PASSWORD = "#Bharath123"
+USERNAME = "_MANISH"
+PASSWORD = "8LidQpavf9b#hg5"
 TOPIC = "iot/failure"
 fake = Faker()
 
@@ -254,4 +254,5 @@ iface = gr.Interface(
 threading.Thread(target=publish_simulated_continuous, daemon=True).start()
 threading.Thread(target=mqtt_subscribe, daemon=True).start()
 threading.Thread(target=streaming_processing_loop, daemon=True).start()
+
 iface.launch()
