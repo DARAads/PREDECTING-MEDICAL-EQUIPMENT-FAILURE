@@ -29,18 +29,19 @@ Unplanned failures cause:
   - Device type & name  
   - Environmental conditions (temperature, pressure, vibration)  
   - Operational features (location, climate control, runtime hours)  
-- **Live streaming data** is ingested, processed, and scored in near real-time.  
+- **Live streaming data** from simulated devices is ingested into **HiveMQ Cloud / Hive tables**, processed by Spark, and scored in near real-time.  
 - A **Gradio web dashboard** visualizes predicted failure risks to technicians for preventive action.
 
 ---
 
 ## ⚙️ Architecture  
-1. **Data Collection** → Simulated medical device telemetry  
-2. **Preprocessing & Feature Engineering** → Spark pipeline with HiveMQ Cloud  
-3. **Model Training & Testing** → XGBoost classifier in Python  
-4. **Prediction Storage** → Azure Blob Storage (CSV blobs)  
-5. **Frontend Visualization** → Gradio Web Interface  
-6. **Deployment** → Python backend serving model predictions  
+1. **Data Collection** → Simulated medical device telemetry pushed to HiveMQ Cloud  
+2. **Hive Integration** → Hive tables store structured streaming data (device type, temperature, predicted risk)  
+3. **Preprocessing & Feature Engineering** → Spark pipeline reads/cleans Hive data  
+4. **Model Training & Testing** → XGBoost classifier in Python  
+5. **Prediction Storage** → Azure Blob Storage (CSV blobs)  
+6. **Frontend Visualization** → Gradio Web Interface  
+7. **Deployment** → Python backend serving model predictions  
 
 ---
 
@@ -63,9 +64,9 @@ Unplanned failures cause:
 |-----------------|-------------|
 | Programming Language | Python |
 | ML Library | XGBoost, scikit-learn |
-| Data Streaming | HiveMQ Cloud |
+| Data Streaming & Storage | HiveMQ Cloud + Hive Tables |
 | Data Processing | Spark Pipeline |
-| Storage | Azure Blob Storage |
+| Long-term Storage | Azure Blob Storage |
 | Web UI | Gradio |
 
 ---
@@ -93,6 +94,14 @@ Install dependencies
 bash
 Copy code
 pip install -r requirements.txt
+Configure HiveMQ / Hive
+
+Set up a HiveMQ Cloud cluster (or local Hive instance).
+
+Create Hive tables with schema matching your device data.
+
+Update connection settings in the Python config file.
+
 Prepare dataset
 
 Place SynDataset.csv in the project root folder.
@@ -102,6 +111,12 @@ Train the model
 bash
 Copy code
 python train_model.py
+Run streaming pipeline (Spark + Hive)
+
+Launch Spark job to read from Hive tables and feed the model.
+
+Spark transforms incoming data and sends predictions to Azure Blob Storage.
+
 Launch the Gradio web interface
 
 bash
